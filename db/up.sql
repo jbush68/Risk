@@ -639,11 +639,11 @@ CREATE VIEW public.rollinfo AS
     (turninfo.rollendtime)::text AS rollendtime,
     turninfo.chaosrerolls,
     turninfo.chaosweight,
-    territory_ownership_without_neighbors.day,
+    territory_ownership_without_neighbors.day + 1,
     territory_ownership_without_neighbors.season,
     json_agg(json_build_object('territory', territory_ownership_without_neighbors.name, 'timestamp', territory_ownership_without_neighbors."timestamp", 'winner', territory_ownership_without_neighbors.owner, 'randomNumber', territory_ownership_without_neighbors.random_number)) AS json_agg
    FROM (public.territory_ownership_without_neighbors
-     JOIN public.turninfo ON (((turninfo.day = territory_ownership_without_neighbors.day) AND (turninfo.season = territory_ownership_without_neighbors.season))))
+     JOIN public.turninfo ON (((turninfo.day = territory_ownership_without_neighbors.day - 1) AND (turninfo.season = territory_ownership_without_neighbors.season))))
   GROUP BY territory_ownership_without_neighbors.day, territory_ownership_without_neighbors.season, turninfo.chaosrerolls, turninfo.rollstarttime, turninfo.rollendtime, turninfo.chaosweight;
 
 
